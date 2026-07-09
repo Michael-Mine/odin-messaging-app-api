@@ -11,3 +11,36 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model User {
+  id            Int       @id @default(autoincrement())
+  username      String    @unique
+  password      String
+  name          String
+  bio           String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now())
+  deletedAt     DateTime?
+  messages      Message[]
+  chats         Chat[]
+}
+
+model Message {
+  id          Int     @id @default(autoincrement())
+  sender      User    @relation(fields: [senderId], references: [id])
+  senderId    Int
+  chat        Chat    @relation(fields: [chatId], references: [id])
+  chatId      Int
+  content     String?
+  createdAt   DateTime  @default(now())
+  deletedAt   DateTime?
+}
+
+model Chat {
+  id          Int       @id @default(autoincrement())
+  subject     String?   //for group chats
+  messages    Message[]
+  users       User[]
+  createdAt   DateTime  @default(now())
+  deletedAt   DateTime?
+}
