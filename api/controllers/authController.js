@@ -1,26 +1,12 @@
-const { body, validationResult, matchedData } = require("express-validator");
+const { validationResult, matchedData } = require("express-validator");
+const validations = require("./validations");
 const { prisma } = require("../../lib/prisma.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const lengthErr = "must be between 1 and 40 characters.";
-const emailErr = "must be an email address";
-
-const validateLoginPost = [
-  body("username")
-    .trim()
-    .isEmail()
-    .withMessage(`Email ${emailErr}`)
-    .isLength({ min: 1, max: 40 })
-    .withMessage(`Email ${lengthErr}`),
-  body("password")
-    .trim()
-    .isLength({ min: 1, max: 40 })
-    .withMessage(`password ${lengthErr}`),
-];
-
 const loginUser = [
-  validateLoginPost,
+  validations.validateUsername,
+  validations.validatePassword,
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

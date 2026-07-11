@@ -3,14 +3,19 @@ const indexRouter = Router();
 
 const signUpController = require("../controllers/signUpController");
 const authController = require("../controllers/authController");
+const profileController = require("../controllers/profileController");
 
 indexRouter.post("/sign-up", signUpController.signUpPost);
 indexRouter.post("/login", authController.loginUser);
 
+indexRouter.get(
+  "/profile",
+  authController.verifyTokenUser,
+  profileController.getProfile,
+);
+// indexRouter.put("/profile");
+
 // indexRouter.get("/chats");
 // indexRouter.post("/message");
-
-// indexRouter.get("/user");
-// indexRouter.put("/user");
 
 module.exports = indexRouter;
