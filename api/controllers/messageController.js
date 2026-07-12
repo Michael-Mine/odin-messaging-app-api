@@ -22,7 +22,7 @@ const createMessage = [
       }
 
       const chat = await prisma.chat.findUnique({
-        where: { chatId },
+        where: { id: Number(chatId) },
       });
 
       if (!chat) {
@@ -32,7 +32,7 @@ const createMessage = [
       const message = await prisma.message.create({
         data: {
           senderId: user.id,
-          chatId,
+          chatId: Number(chatId),
           content,
         },
         select: {

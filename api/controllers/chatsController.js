@@ -11,16 +11,23 @@ const getUserChats = [
     }
     try {
       const { username } = matchedData(req);
-      const userChats = await prisma.user.findUnique({
+
+      const user = await prisma.user.findUnique({
         where: { username },
-        select: { chats },
+        include: {
+          chats: {
+            include: {
+              messages: true,
+            },
+          },
+        },
       });
 
       if (!user) {
         return res.status(400).json({ message: "User profile not found" });
       }
 
-      return res.status(200).json(userChats);
+      return res.status(200).json(user.chats);
     } catch (err) {
       return res.status(400).json({ message: "Chat retrieval failed" });
     }
@@ -58,10 +65,14 @@ const createChat = [
         data: {
           subject,
           users: {
-            connect: {
-              id: user.id,
-              id: user2.id,
-            },
+            connect: [
+              {
+                id: user.id,
+              },
+              {
+                id: user2.id,
+              },
+            ],
           },
         },
       });
