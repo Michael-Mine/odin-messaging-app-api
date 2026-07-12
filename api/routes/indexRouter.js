@@ -4,6 +4,7 @@ const indexRouter = Router();
 const signUpController = require("../controllers/signUpController");
 const authController = require("../controllers/authController");
 const profileController = require("../controllers/profileController");
+const chatsController = require("../controllers/chatsController");
 const messageController = require("../controllers/messageController");
 
 indexRouter.post("/sign-up", signUpController.signUpPost);
@@ -20,7 +21,18 @@ indexRouter.put(
   profileController.updateProfile,
 );
 
-// indexRouter.get("/chats");
+indexRouter.get(
+  "/user-chats",
+  authController.verifyTokenUser,
+  chatsController.getUserChats,
+);
+
+indexRouter.post(
+  "/chat",
+  authController.verifyTokenUser,
+  chatsController.createChat,
+);
+
 indexRouter.post(
   "/message",
   authController.verifyTokenUser,

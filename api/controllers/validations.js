@@ -22,6 +22,15 @@ const validateUsername = [
     .withMessage(`Email ${lengthErr}`),
 ];
 
+const validateUsername2 = [
+  body("username2")
+    .trim()
+    .isEmail()
+    .withMessage(`Email ${emailErr}`)
+    .isLength({ min: 1, max: 40 })
+    .withMessage(`Email ${lengthErr}`),
+];
+
 const validatePassword = [
   body("password")
     .trim()
@@ -54,6 +63,14 @@ const validateChatId = [
   body("chatId").trim().isInt({ min: 1 }).withMessage(`ChatId ${intErr}`),
 ];
 
+const validateChatSubject = [
+  body("subject")
+    .trim()
+    .optional()
+    .isLength({ min: 1, max: 40 })
+    .withMessage(`Subject ${lengthErr}`),
+];
+
 const validateMessageContent = [
   body("content")
     .trim()
@@ -64,9 +81,11 @@ const validateMessageContent = [
 module.exports = {
   validateName,
   validateUsername,
+  validateUsername2,
   validatePassword,
   validateNewPassword,
   validateBio,
   validateChatId,
+  validateChatSubject,
   validateMessageContent,
 };
