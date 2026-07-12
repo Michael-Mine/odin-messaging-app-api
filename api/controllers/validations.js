@@ -3,6 +3,8 @@ const { body } = require("express-validator");
 const emailErr = "must be an email address";
 const lengthErr = "must be between 1 and 40 characters.";
 const bioErr = "must be 300 characters max.";
+const messageErr = "must be between 1 and 1000 characters.";
+const intErr = "must be a integer";
 
 const validateName = [
   body("name")
@@ -45,7 +47,18 @@ const validateBio = [
   body("bio")
     .trim()
     .isLength({ min: 0, max: 300 })
-    .withMessage(`About ${lengthErr}`),
+    .withMessage(`About ${bioErr}`),
+];
+
+const validateChatId = [
+  body("chatId").trim().isInt({ min: 1 }).withMessage(`ChatId ${intErr}`),
+];
+
+const validateMessageContent = [
+  body("content")
+    .trim()
+    .isLength({ min: 0, max: 1000 })
+    .withMessage(`Message ${messageErr}`),
 ];
 
 module.exports = {
@@ -54,4 +67,6 @@ module.exports = {
   validatePassword,
   validateNewPassword,
   validateBio,
+  validateChatId,
+  validateMessageContent,
 };
