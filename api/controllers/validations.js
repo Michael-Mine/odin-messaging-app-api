@@ -2,6 +2,7 @@ const { body } = require("express-validator");
 
 const emailErr = "must be an email address";
 const lengthErr = "must be between 1 and 40 characters.";
+const bioErr = "must be 300 characters max.";
 
 const validateName = [
   body("name")
@@ -40,9 +41,17 @@ const validateNewPassword = [
   }),
 ];
 
+const validateBio = [
+  body("bio")
+    .trim()
+    .isLength({ min: 0, max: 300 })
+    .withMessage(`About ${lengthErr}`),
+];
+
 module.exports = {
   validateName,
   validateUsername,
   validatePassword,
   validateNewPassword,
+  validateBio,
 };

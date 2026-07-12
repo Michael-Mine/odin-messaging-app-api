@@ -13,7 +13,11 @@ indexRouter.get(
   authController.verifyTokenUser,
   profileController.getProfile,
 );
-// indexRouter.put("/profile");
+indexRouter.put(
+  "/profile",
+  authController.verifyTokenUser,
+  profileController.updateProfile,
+);
 
 // indexRouter.get("/chats");
 // indexRouter.post("/message");
