@@ -21,7 +21,7 @@ indexRouter.put(
   profileController.updateProfile,
 );
 
-indexRouter.get(
+indexRouter.post(
   "/user-chats",
   authController.verifyTokenUser,
   chatsController.getUserChats,

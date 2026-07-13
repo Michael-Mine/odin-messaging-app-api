@@ -17,12 +17,13 @@ const getUserChats = [
         include: {
           chats: {
             include: {
+              users: true,
               messages: true,
             },
           },
         },
       });
-
+      //add select for only needed data
       if (!user) {
         return res.status(400).json({ message: "User profile not found" });
       }
