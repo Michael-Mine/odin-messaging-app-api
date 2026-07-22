@@ -1,5 +1,6 @@
 const { body } = require("express-validator");
 
+const nameErr = "must be between 1 and 14 characters.";
 const emailErr = "must be an email address";
 const lengthErr = "must be between 1 and 40 characters.";
 const bioErr = "must be 300 characters max.";
@@ -9,8 +10,8 @@ const intErr = "must be a integer";
 const validateName = [
   body("name")
     .trim()
-    .isLength({ min: 1, max: 40 })
-    .withMessage(`Name ${lengthErr}`),
+    .isLength({ min: 1, max: 14 })
+    .withMessage(`Name ${nameErr}`),
 ];
 
 const validateUsername = [
