@@ -16,14 +16,34 @@ const getUserChats = [
         where: { username },
         include: {
           chats: {
-            include: {
-              users: true,
-              messages: true,
+            select: {
+              subject: true,
+              cuid: true,
+              users: {
+                select: {
+                  username: true,
+                  name: true,
+                  bio: true,
+                },
+              },
+              messages: {
+                select: {
+                  cuid: true,
+                  createdAt: true,
+                  content: true,
+                  sender: {
+                    select: {
+                      name: true,
+                      username: true,
+                    },
+                  },
+                },
+              },
             },
           },
         },
       });
-      //add select for only needed data
+
       if (!user) {
         return res.status(400).json({ message: "User profile not found" });
       }

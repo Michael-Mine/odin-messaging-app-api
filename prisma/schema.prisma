@@ -27,6 +27,7 @@ model User {
 
 model Message {
   id          Int     @id @default(autoincrement())
+  cuid        String  @default(cuid(2))
   sender      User    @relation(fields: [senderId], references: [id])
   senderId    Int
   chat        Chat    @relation(fields: [chatId], references: [id])
@@ -38,6 +39,7 @@ model Message {
 
 model Chat {
   id          Int       @id @default(autoincrement())
+  cuid        String    @default(cuid(2))
   subject     String?   //for group chats
   messages    Message[]
   users       User[]

@@ -10,7 +10,7 @@ const messageController = require("../controllers/messageController");
 indexRouter.post("/sign-up", signUpController.signUpPost);
 indexRouter.post("/login", authController.loginUser);
 
-indexRouter.get(
+indexRouter.post(
   "/profile",
   authController.verifyTokenUser,
   profileController.getProfile,
