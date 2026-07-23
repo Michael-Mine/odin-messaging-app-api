@@ -14,41 +14,47 @@ const getUserChats = [
 
       const user = await prisma.user.findUnique({
         where: { username },
-        include: {
-          chats: {
+      });
+      if (!user) {
+        return res.status(400).json({ message: "User profile not found" });
+      }
+
+      const chats = await prisma.chat.findMany({
+        where: {
+          users: {
+            some: {
+              username,
+            },
+          },
+        },
+        orderBy: [{ lastMessageAt: "desc" }, { id: "desc" }],
+        select: {
+          subject: true,
+          cuid: true,
+          lastMessageAt: true,
+          users: {
             select: {
-              subject: true,
+              username: true,
+              name: true,
+              bio: true,
+            },
+          },
+          messages: {
+            select: {
               cuid: true,
-              users: {
+              createdAt: true,
+              content: true,
+              sender: {
                 select: {
-                  username: true,
                   name: true,
-                  bio: true,
-                },
-              },
-              messages: {
-                select: {
-                  cuid: true,
-                  createdAt: true,
-                  content: true,
-                  sender: {
-                    select: {
-                      name: true,
-                      username: true,
-                    },
-                  },
+                  username: true,
                 },
               },
             },
           },
         },
       });
-
-      if (!user) {
-        return res.status(400).json({ message: "User profile not found" });
-      }
-
-      return res.status(200).json(user.chats);
+      return res.status(200).json(chats);
     } catch (err) {
       return res.status(400).json({ message: "Chat retrieval failed" });
     }
@@ -71,7 +77,7 @@ const createChat = [
       });
 
       if (!user) {
-        return res.status(400).json({ message: "User profile not found" });
+        return res.status(400).json({ message: "User chat creator not found" });
       }
 
       const user2 = await prisma.user.findUnique({
@@ -79,7 +85,7 @@ const createChat = [
       });
 
       if (!user2) {
-        return res.status(400).json({ message: "User2 profile not found" });
+        return res.status(400).json({ message: "User for new chat not found" });
       }
 
       const chat = await prisma.chat.create({

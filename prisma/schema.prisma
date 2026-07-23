@@ -38,11 +38,12 @@ model Message {
 }
 
 model Chat {
-  id          Int       @id @default(autoincrement())
-  cuid        String    @default(cuid(2))
-  subject     String?   //for group chats
-  messages    Message[]
-  users       User[]
-  createdAt   DateTime  @default(now())
-  deletedAt   DateTime?
+  id            Int       @id @default(autoincrement())
+  cuid          String    @default(cuid(2))
+  subject       String?   //for group chats
+  messages      Message[]
+  users         User[]
+  createdAt     DateTime  @default(now())
+  deletedAt     DateTime?
+  lastMessageAt DateTime?
 }
