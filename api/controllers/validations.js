@@ -5,7 +5,6 @@ const emailErr = "must be an email address";
 const lengthErr = "must be between 1 and 40 characters.";
 const bioErr = "must be 300 characters max.";
 const messageErr = "must be between 1 and 1000 characters.";
-const intErr = "must be a integer";
 
 const validateName = [
   body("name")
@@ -18,18 +17,18 @@ const validateUsername = [
   body("username")
     .trim()
     .isEmail()
-    .withMessage(`Email ${emailErr}`)
+    .withMessage(`Username ${emailErr}`)
     .isLength({ min: 1, max: 40 })
-    .withMessage(`Email ${lengthErr}`),
+    .withMessage(`Username ${lengthErr}`),
 ];
 
 const validateUsername2 = [
   body("username2")
     .trim()
     .isEmail()
-    .withMessage(`Email ${emailErr}`)
+    .withMessage(`Username ${emailErr}`)
     .isLength({ min: 1, max: 40 })
-    .withMessage(`Email ${lengthErr}`),
+    .withMessage(`Username ${lengthErr}`),
 ];
 
 const validatePassword = [
@@ -60,22 +59,20 @@ const validateBio = [
     .withMessage(`About ${bioErr}`),
 ];
 
-const validateChatId = [
-  body("chatId").trim().isInt({ min: 1 }).withMessage(`ChatId ${intErr}`),
-];
+const validateChatCuid = [body("chatCuid").trim()];
 
 const validateChatSubject = [
   body("subject")
     .trim()
     .optional()
-    .isLength({ min: 1, max: 40 })
+    .isLength({ min: 0, max: 40 })
     .withMessage(`Subject ${lengthErr}`),
 ];
 
 const validateMessageContent = [
   body("content")
     .trim()
-    .isLength({ min: 0, max: 1000 })
+    .isLength({ min: 1, max: 1000 })
     .withMessage(`Message ${messageErr}`),
 ];
 
@@ -86,7 +83,7 @@ module.exports = {
   validatePassword,
   validateNewPassword,
   validateBio,
-  validateChatId,
+  validateChatCuid,
   validateChatSubject,
   validateMessageContent,
 };

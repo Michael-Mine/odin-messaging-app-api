@@ -85,7 +85,7 @@ const createChat = [
       });
 
       if (!user2) {
-        return res.status(400).json({ message: "User for new chat not found" });
+        return res.status(400).json({ message: "Username not found" });
       }
 
       const chat = await prisma.chat.create({
@@ -104,7 +104,7 @@ const createChat = [
         },
       });
 
-      return res.status(200).json(chat);
+      return res.status(200).json({ message: "New chat created" });
     } catch (err) {
       return res.status(400).json({ message: "New chat failed" });
     }
