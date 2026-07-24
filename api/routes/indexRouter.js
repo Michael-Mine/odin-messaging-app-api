@@ -39,6 +39,12 @@ indexRouter.put(
   chatsController.addMember,
 );
 
+indexRouter.delete(
+  "/chat",
+  authController.verifyTokenUser,
+  chatsController.leaveChat,
+);
+
 indexRouter.post(
   "/message",
   authController.verifyTokenUser,

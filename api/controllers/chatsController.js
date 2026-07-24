@@ -167,8 +167,56 @@ const addMember = [
   },
 ];
 
+const leaveChat = [
+  validations.validateUsername,
+  validations.validateChatCuid,
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json(errors.array());
+    }
+    try {
+      const { username, chatCuid } = matchedData(req);
+      const user = await prisma.user.findUnique({
+        where: { username },
+      });
+
+      if (!user) {
+        return res.status(400).json({ message: "User not found" });
+      }
+
+      const chat = await prisma.chat.findFirst({
+        where: { cuid: chatCuid },
+        include: { users: true },
+      });
+
+      if (!chat) {
+        return res.status(400).json({ message: "Chat not found" });
+      }
+
+      if (!chat.users.some((item) => item.username === username)) {
+        return res.status(400).json({ message: "User not in chat" });
+      }
+
+      const userUpdate = await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          chats: {
+            disconnect: { id: chat.id },
+          },
+        },
+      });
+
+      return res.status(200).json({ message: "User left chat" });
+    } catch (err) {
+      return res.status(400).json({ message: "User leaving chat failed" });
+    }
+  },
+];
+
 module.exports = {
   getUserChats,
   createChat,
   addMember,
+  leaveChat,
 };
