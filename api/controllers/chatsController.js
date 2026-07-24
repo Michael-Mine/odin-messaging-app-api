@@ -111,7 +111,64 @@ const createChat = [
   },
 ];
 
+const addMember = [
+  validations.validateUsername,
+  validations.validateUsername2,
+  validations.validateChatCuid,
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json(errors.array());
+    }
+    try {
+      const { username, username2, chatCuid } = matchedData(req);
+      const user = await prisma.user.findUnique({
+        where: { username },
+      });
+
+      if (!user) {
+        return res.status(400).json({ message: "User chat adder not found" });
+      }
+
+      const user2 = await prisma.user.findUnique({
+        where: { username: username2 },
+      });
+
+      if (!user2) {
+        return res.status(400).json({ message: "Username not found" });
+      }
+
+      const chat = await prisma.chat.findFirst({
+        where: { cuid: chatCuid },
+        include: { users: true },
+      });
+
+      if (!chat) {
+        return res.status(400).json({ message: "Chat not found" });
+      }
+
+      if (chat.users.some((item) => item.username === username2)) {
+        return res.status(400).json({ message: "User already in group" });
+      }
+
+      const chatUpdate = await prisma.chat.update({
+        where: { id: chat.id },
+        data: {
+          users: {
+            connect: { id: user2.id },
+          },
+        },
+      });
+
+      return res.status(200).json({ message: "New member added" });
+    } catch (err) {
+      return res.status(400).json({ message: "New member failed" });
+    }
+  },
+];
+
 module.exports = {
   getUserChats,
   createChat,
+  addMember,
 };

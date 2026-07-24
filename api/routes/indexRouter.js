@@ -33,6 +33,12 @@ indexRouter.post(
   chatsController.createChat,
 );
 
+indexRouter.put(
+  "/chat",
+  authController.verifyTokenUser,
+  chatsController.addMember,
+);
+
 indexRouter.post(
   "/message",
   authController.verifyTokenUser,
