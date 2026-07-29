@@ -14,6 +14,8 @@ Connects to this separate backend API repo using Node, Express, PostgreSQL and P
 
 Frontend repo here: https://github.com/Michael-Mine/odin-messaging-app-fe
 
+Note: As backend is REST API, it cannot handle real time updates. Page reloads (top left icon) are needed to check for new messages.
+
 ## Features
 
 - Create chats and send messages to another user.
