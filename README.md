@@ -143,7 +143,9 @@ npm run test
 
 3. Add the new Postgres database as `DATABASE_URL`variable in project
 
-4. Add the following settings in project:
+4. Add a `JWT_SECRET_USER` variable in project with your secret
+
+5. Add the following settings in project:
 
 Custom Build Command:
 
